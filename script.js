@@ -11,8 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 const steps = [
-  { delay: 6000, html: 'ℹ Output folder:<div class="pl-2">- /projects /portfolio /about_me</div>', class: 'text-blue-500' },
-  { delay: 7000, text: 'Type, scroll, click — curiosity leads the way.', class: 'text-muted' },
+  { delay: 1000, html: 'ℹ Output folder:<div class="pl-2">- /projects /portfolio /about_me</div>', class: 'text-blue-500' },
 ];
 
 const terminal = document.getElementById('terminal-output');
@@ -167,16 +166,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Terminal typing animation
     const terminalCommands = [
+        { html: 'ℹ Output folder:<div class="pl-2">- /projects /portfolio /about_me</div>', delay: 1000, class: 'text-blue-500' },
+        { text: 'Type, scroll, click — curiosity leads the way.', delay: 1000, class: 'text-muted' },
         { text: '> echo "Hello, World!"', delay: 1000 },
         { text: 'Hello, World!', delay: 500, class: 'text-green-500' },
         { text: '> cat about_me.txt', delay: 1000 },
-        { text: 'CSE-AIML student by day, code wizard by night.', delay: 1000 },
-        { text: '> ls skills/', delay: 2000 },
-        { text: 'DSA    Web Development    Problem Solving', delay: 1000, class: 'text-blue-500' },
-        { text: '> cat hobbies.txt', delay: 2000 },
-        { text: 'Gaming    Anime    Coding    Learning', delay: 1000, class: 'text-green-500' },
-        // { text: '> echo "Always learning, always building."', delay: 2000 },
-        // { text: 'Always learning, always building.', delay: 1000, class: 'text-muted' }
+        { text: 'CSE-AIML student by day, code wizard by night.', delay: 500 },
+        { text: '> ls skills/', delay: 1000 },
+        { text: 'DSA    Web Development    Problem Solving', delay: 500, class: 'text-blue-500' },
+        { text: '> cat hobbies.txt', delay: 1000 },
+        { text: 'Gaming    Anime    Coding    Learning', delay: 500, class: 'text-green-500' }
     ];
 
     let currentCommand = 0;
@@ -193,7 +192,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Create typing animation
             const typing = document.createElement('div');
             typing.className = 'typing';
-            typing.textContent = command.text;
+            if (command.html) {
+                typing.innerHTML = command.html;
+            } else {
+                typing.textContent = command.text;
+            }
             
             line.appendChild(typing);
             terminalContent.appendChild(line);
@@ -244,3 +247,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+const aboutMeSequence = [
+  { text: '> echo "Hello, World!"', delay: 5000 },
+  { text: 'Hello, World!', delay: 500, class: 'text-green-500' },
+  { text: '> cat about_me.txt', delay: 1000 },
+  { text: 'CSE-AIML student by day, code wizard by night.', delay: 500 },
+  { text: '> ls skills/', delay: 1000 },
+  { text: 'DSA    Web Development    Problem Solving', delay: 500, class: 'text-blue-500' },
+  { text: '> cat hobbies.txt', delay: 1000 },
+  { text: 'Gaming    Anime    Coding    Learning', delay: 500, class: 'text-green-500' },
+  // { text: '> echo "Always learning, always building."', delay: 2000 },
+  // { text: 'Always learning, always building.', delay: 1000, class: 'text-muted' }
+];
