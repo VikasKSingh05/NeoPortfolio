@@ -255,16 +255,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Terminal typing animation
     const terminalCommands = [
-        { html: 'ℹ Output folder:<div class="pl-2">- /projects /portfolio /about_me</div>', delay: 1000, class: 'text-blue-500' },
-        { text: 'Type, scroll, click — curiosity leads the way.', delay: 1000, class: 'text-muted' },
-        { text: '> echo "Hello, World!"', delay: 1000 },
-        { text: 'Hello, World!', delay: 500, class: 'text-green-500' },
-        { text: '> cat about_me.txt', delay: 1000 },
-        { text: 'CSE-AIML student by day, code wizard by night.', delay: 500 },
-        { text: '> ls skills/', delay: 1000 },
-        { text: 'DSA    Web Development    Problem Solving', delay: 500, class: 'text-blue-500' },
-        { text: '> cat hobbies.txt', delay: 1000 },
-        { text: 'Gaming    Anime    Coding    Learning', delay: 500, class: 'text-green-500' }
+        { html: 'ℹ Output folder:<div class="pl-2">- /projects /portfolio /about_me</div>', delay: 400, class: 'text-blue-500' },
+        { text: 'Type, scroll, click — curiosity leads the way.', delay: 400, class: 'text-muted' },
+        { text: '> echo "Hello, World!"', delay: 300 },
+        { text: 'Hello, World!', delay: 200, class: 'text-green-500' },
+        { text: '> cat about_me.txt', delay: 300 },
+        { text: 'CSE-AIML student by day, code wizard by night.', delay: 200 },
+        { text: '> ls skills/', delay: 300 },
+        { text: 'DSA    Web Development    Problem Solving', delay: 200, class: 'text-blue-500' },
+        { text: '> cat hobbies.txt', delay: 300 },
+        { text: 'Gaming    Anime    Coding    Learning', delay: 200, class: 'text-green-500' }
     ];
 
     let currentCommand = 0;
