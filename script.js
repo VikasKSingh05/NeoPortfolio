@@ -1,3 +1,75 @@
+// Preloader functionality
+document.addEventListener("DOMContentLoaded", function() {
+    const preloader = document.getElementById('preloader');
+    const vShape = document.getElementById('v-shape');
+    const loadingText = document.getElementById('loading-text');
+    const main = document.getElementById('main');
+    
+    let progress = 0;
+    const totalDuration = 3000; // 3 seconds total
+    const updateInterval = 50; // Update every 50ms
+    
+    // Hide main content initially and reset GSAP animations
+    main.style.opacity = '0';
+    main.style.pointerEvents = 'none';
+    
+    // Reset GSAP animations to initial state
+    gsap.set("#nav", { y: '-10', opacity: 0 });
+    gsap.set(".boundingelem", { y: '100%' });
+    gsap.set("#landingfooter", { y: '-10', opacity: 0 });
+    
+    // Start the loading animation
+    setTimeout(() => {
+        vShape.classList.add('loaded');
+    }, 500);
+    
+    // Simulate loading progress
+    const progressInterval = setInterval(() => {
+        progress += (100 / (totalDuration / updateInterval));
+        
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(progressInterval);
+            
+            // Complete loading
+            loadingText.textContent = '100%';
+            loadingText.classList.add('complete');
+            
+            // Morph V to Vikas
+            setTimeout(() => {
+                vShape.classList.add('morph');
+                vShape.textContent = 'Vikas';
+            }, 500);
+            
+            // Hide preloader and show main content with animations
+            setTimeout(() => {
+                preloader.classList.add('fade-out');
+                main.style.opacity = '1';
+                main.style.pointerEvents = 'auto';
+                
+                // Start GSAP animations after preloader is hidden
+                setTimeout(() => {
+                    firstPageAnim();
+                    circleSkew();
+                    
+                    // Update locomotive scroll after animations complete
+                    setTimeout(() => {
+                        if (window.scroll) window.scroll.update();
+                    }, 2000);
+                }, 100);
+                
+                // Remove preloader from DOM after animation
+                setTimeout(() => {
+                    preloader.remove();
+                }, 500);
+            }, 1500);
+            
+        } else {
+            loadingText.textContent = Math.floor(progress) + '%';
+        }
+    }, updateInterval);
+});
+
 // locomotive scroll setup
 document.addEventListener("DOMContentLoaded", function() {
   window.scroll = new LocomotiveScroll({
@@ -36,12 +108,36 @@ setTimeout(() => {
 let timeout;
 
 function firstPageAnim() {
+  // Debug: Check if elements exist
+  const nav = document.querySelector("#nav");
+  const landingFooter = document.querySelector("#landingfooter");
+  const boundingelem = document.querySelectorAll(".boundingelem");
+  const menuBtn = document.querySelector(".menu-btn");
+  
+  console.log("Nav element:", nav);
+  console.log("Landing footer element:", landingFooter);
+  console.log("Bounding elements:", boundingelem.length);
+  console.log("Menu button:", menuBtn);
+  
+  // Debug: Check initial states
+  console.log("Nav initial opacity:", getComputedStyle(nav).opacity);
+  console.log("Nav initial transform:", getComputedStyle(nav).transform);
+  
   var tl = gsap.timeline();
-  tl.from("#nav", {
-    y: '-10',
-    opacity: 0,
+  tl.to("#nav", {
+    y: 0,
+    opacity: 1,
     duration: 1.5,
-    ease: Expo.easeInOut
+    ease: Expo.easeInOut,
+    onStart: function() {
+      console.log("Nav animation started");
+    },
+    onComplete: function() {
+      // Ensure nav is visible after animation
+      gsap.set("#nav", { clearProps: "all" });
+      console.log("Nav animation completed");
+      console.log("Nav final opacity:", getComputedStyle(nav).opacity);
+    }
   })
     .to(".boundingelem", {
       y: 0,
@@ -50,12 +146,17 @@ function firstPageAnim() {
       stagger: .2,
       ease: Expo.easeInOut
     })
-    .from("#landingfooter", {
-      y: '-10',
-      opacity: 0,
+    .to("#landingfooter", {
+      y: 0,
+      opacity: 1,
       duration: 1.5,
       delay: -1,
-      ease: Expo.easeInOut
+      ease: Expo.easeInOut,
+      onComplete: function() {
+        // Ensure landing footer is visible after animation
+        gsap.set("#landingfooter", { clearProps: "all" });
+        console.log("Landing footer animation completed");
+      }
     });
 }
 
@@ -88,9 +189,8 @@ function circlemousefollower(xscale, yscale) {
   });
 }
 
+// Initialize mouse follower immediately (this can run behind preloader)
 circlemousefollower();
-firstPageAnim();
-circleSkew();
 
 document.querySelectorAll(".elem").forEach(function (elem) {
   let rotate = 0;
