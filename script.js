@@ -6,14 +6,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const main = document.getElementById('main');
     
     let progress = 0;
-    const totalDuration = 3000; // 3 seconds total
-    const updateInterval = 50; // Update every 50ms
+    const totalDuration = 3000; 
+    const updateInterval = 50; 
     
-    // Hide main content initially and reset GSAP animations
     main.style.opacity = '0';
     main.style.pointerEvents = 'none';
     
-    // Reset GSAP animations to initial state
     gsap.set("#nav", { y: '-10', opacity: 0 });
     gsap.set(".boundingelem", { y: '100%' });
     gsap.set("#landingfooter", { y: '-10', opacity: 0 });
@@ -23,7 +21,6 @@ document.addEventListener("DOMContentLoaded", function() {
         vShape.classList.add('loaded');
     }, 500);
     
-    // Simulate loading progress
     const progressInterval = setInterval(() => {
         progress += (100 / (totalDuration / updateInterval));
         
@@ -35,30 +32,25 @@ document.addEventListener("DOMContentLoaded", function() {
             loadingText.textContent = '100%';
             loadingText.classList.add('complete');
             
-            // Morph V to Vikas
             setTimeout(() => {
                 vShape.classList.add('morph');
                 vShape.textContent = 'Vikas';
             }, 500);
             
-            // Hide preloader and show main content with animations
             setTimeout(() => {
                 preloader.classList.add('fade-out');
                 main.style.opacity = '1';
                 main.style.pointerEvents = 'auto';
                 
-                // Start GSAP animations after preloader is hidden
                 setTimeout(() => {
                     firstPageAnim();
                     circleSkew();
                     
-                    // Update locomotive scroll after animations complete
                     setTimeout(() => {
                         if (window.scroll) window.scroll.update();
                     }, 2000);
                 }, 100);
                 
-                // Remove preloader from DOM after animation
                 setTimeout(() => {
                     preloader.remove();
                 }, 500);
@@ -108,7 +100,7 @@ setTimeout(() => {
 let timeout;
 
 function firstPageAnim() {
-  // Debug: Check if elements exist
+
   const nav = document.querySelector("#nav");
   const landingFooter = document.querySelector("#landingfooter");
   const boundingelem = document.querySelectorAll(".boundingelem");
@@ -119,7 +111,6 @@ function firstPageAnim() {
   console.log("Bounding elements:", boundingelem.length);
   console.log("Menu button:", menuBtn);
   
-  // Debug: Check initial states
   console.log("Nav initial opacity:", getComputedStyle(nav).opacity);
   console.log("Nav initial transform:", getComputedStyle(nav).transform);
   
@@ -153,7 +144,6 @@ function firstPageAnim() {
       delay: -1,
       ease: Expo.easeInOut,
       onComplete: function() {
-        // Ensure landing footer is visible after animation
         gsap.set("#landingfooter", { clearProps: "all" });
         console.log("Landing footer animation completed");
       }
@@ -189,7 +179,6 @@ function circlemousefollower(xscale, yscale) {
   });
 }
 
-// Initialize mouse follower immediately (this can run behind preloader)
 circlemousefollower();
 
 document.querySelectorAll(".elem").forEach(function (elem) {
@@ -289,7 +278,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 line.classList.add(command.class);
             }
             
-            // Create typing animation
             const typing = document.createElement('div');
             typing.className = 'typing';
             if (command.html) {
@@ -301,12 +289,10 @@ document.addEventListener('DOMContentLoaded', function() {
             line.appendChild(typing);
             terminalContent.appendChild(line);
 
-            // Start typing animation
             requestAnimationFrame(() => {
                 typing.classList.add('animate');
             });
 
-            // Remove typing animation after delay
             setTimeout(() => {
                 typing.classList.remove('typing', 'animate');
                 currentCommand++;
@@ -317,7 +303,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Intersection Observer for terminal
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting && !hasStarted) {
@@ -333,10 +318,8 @@ document.addEventListener('DOMContentLoaded', function() {
         threshold: 0.5 // Start when 50% of the terminal is visible
     });
 
-    // Observe the about section
     observer.observe(document.getElementById('about'));
 
-    // Add hover effect for terminal buttons
     const buttons = document.querySelectorAll('.terminal-button');
     buttons.forEach(button => {
         button.addEventListener('mouseover', () => {
