@@ -70,7 +70,15 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
   window.addEventListener('load', function() {
-    window.scroll.update();
+    if (window.scroll && window.scroll.update) {
+      window.scroll.update();
+    }
+    // Extra update after a short delay for images/fonts
+    setTimeout(function() {
+      if (window.scroll && window.scroll.update) {
+        window.scroll.update();
+      }
+    }, 1000);
   });
 });
 
@@ -90,6 +98,7 @@ steps.forEach(({ delay, text, html, class: className }) => {
       line.textContent = text;
     }
     terminal.appendChild(line);
+    if (window.scroll && window.scroll.update) window.scroll.update();
   }, delay);
 });
 
@@ -288,6 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             line.appendChild(typing);
             terminalContent.appendChild(line);
+            if (window.scroll && window.scroll.update) window.scroll.update();
 
             requestAnimationFrame(() => {
                 typing.classList.add('animate');
