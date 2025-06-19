@@ -155,10 +155,24 @@ function firstPageAnim() {
       onComplete: function() {
         gsap.set("#landingfooter", { clearProps: "all" });
         console.log("Landing footer animation completed");
-        // Animate #second in after landing animation, only on small devices
-        if (window.innerWidth <= 900) {
-          document.getElementById('second').classList.add('visible');
-        }
+        // Animate #second in after landing animation, on all devices
+        document.getElementById('second').classList.add('visible');
+        // Animate #about in after #second (with a slight delay)
+        setTimeout(function() {
+          document.getElementById('about').classList.add('visible');
+          // Animate #projects in after #about (with a slight delay)
+          setTimeout(function() {
+            document.getElementById('projects').classList.add('visible');
+            // Animate #subscribe in after #projects (with a slight delay)
+            setTimeout(function() {
+              document.getElementById('subscribe').classList.add('visible');
+              // Animate #footer in after #subscribe (with a slight delay)
+              setTimeout(function() {
+                document.getElementById('footer').classList.add('visible');
+              }, 400);
+            }, 400);
+          }, 400);
+        }, 400);
       }
     });
 }

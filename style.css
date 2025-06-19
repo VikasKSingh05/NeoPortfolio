@@ -206,6 +206,13 @@ html,body{
     /* min-height: 100vh; */
     height: auto;
     background-color: black;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.19,1,0.22,1), transform 0.8s cubic-bezier(0.19,1,0.22,1);
+}
+#second.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 .elem{
     position: relative;
@@ -243,6 +250,13 @@ html,body{
     width: 100%;
     color: #ffffff;
     background: black;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.19,1,0.22,1), transform 0.8s cubic-bezier(0.19,1,0.22,1);
+}
+#about.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .about-container {
@@ -307,6 +321,13 @@ html,body{
     padding-bottom: 7vw;
     background-color: black;
     padding-top: 10px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.19,1,0.22,1), transform 0.8s cubic-bezier(0.19,1,0.22,1);
+}
+#subscribe.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 #subscribe h5{
     text-transform: uppercase;
@@ -325,6 +346,13 @@ html,body{
     justify-content: space-between;
     align-items: center;
     padding: 30px 30px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.19,1,0.22,1), transform 0.8s cubic-bezier(0.19,1,0.22,1);
+}
+#footer.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 #footerleft{
     display: flex;
@@ -521,6 +549,14 @@ html,body{
     justify-content: center;
     color: #ffffff;
     background: black;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.19,1,0.22,1), transform 0.8s cubic-bezier(0.19,1,0.22,1);
+}
+
+#projects.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 #projects h5 {
