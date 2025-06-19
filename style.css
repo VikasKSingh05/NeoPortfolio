@@ -761,6 +761,13 @@ html,body{
   #second {
     padding-top: 2rem;
     padding-right: 2vw;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.19,1,0.22,1), transform 0.8s cubic-bezier(0.19,1,0.22,1);
+  }
+  #second.visible {
+    opacity: 1;
+    transform: translateY(0);
   }
   .elem {
     flex-direction: column;

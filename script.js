@@ -155,6 +155,10 @@ function firstPageAnim() {
       onComplete: function() {
         gsap.set("#landingfooter", { clearProps: "all" });
         console.log("Landing footer animation completed");
+        // Animate #second in after landing animation, only on small devices
+        if (window.innerWidth <= 900) {
+          document.getElementById('second').classList.add('visible');
+        }
       }
     });
 }
