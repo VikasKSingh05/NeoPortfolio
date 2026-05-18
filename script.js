@@ -269,10 +269,6 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
 
     function createTerminalLine(command, index) {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'terminal-output-line';
-        wrapper.dataset.command = command.isCommand ? 'true' : 'false';
-
         const line = document.createElement('div');
         line.className = 'animated-line';
         if (command.class) line.classList.add(command.class);
@@ -284,65 +280,39 @@ document.addEventListener('DOMContentLoaded', function() {
             line.textContent = command.text;
         }
 
-        const toast = document.createElement('span');
-        toast.className = 'copied-toast';
-        toast.textContent = 'Copied!';
-        wrapper.appendChild(toast);
-
-        wrapper.appendChild(line);
-
         if (command.isCommand) {
-            line.addEventListener('click', () => executeCommand(wrapper, line, command.output));
+            line.addEventListener('click', () => executeCommand(line, command.output));
         }
 
-        line.addEventListener('click', () => {
-            copyToClipboard(command.html ? line.textContent : command.text, toast);
-        });
-
-        return wrapper;
+        return line;
     }
 
-    function executeCommand(wrapper, line, output) {
-        if (wrapper.dataset.executed === 'true') return;
+    function executeCommand(line, output) {
+        if (line.dataset.executed === 'true') return;
 
-        wrapper.dataset.executed = 'true';
-        line.classList.add('processing');
-        line.innerHTML = line.textContent + ' <span style="color: #fbbf24;">processing...</span>';
+        line.dataset.executed = 'true';
+        const originalText = line.textContent;
+        line.innerHTML = originalText + '<span class="processing-text">processing...</span>';
 
         setTimeout(() => {
-            line.classList.remove('processing');
+            line.innerHTML = originalText;
             line.classList.add('executed');
-            line.innerHTML = line.textContent;
 
             const outputLine = document.createElement('div');
             outputLine.className = 'animated-line text-green-500';
             outputLine.style.opacity = '0';
+            outputLine.style.transform = 'translateY(-5px)';
             outputLine.textContent = output;
-            wrapper.insertAdjacentElement('afterend', outputLine);
+            line.insertAdjacentElement('afterend', outputLine);
 
-            setTimeout(() => {
+            requestAnimationFrame(() => {
                 outputLine.style.opacity = '1';
-                outputLine.style.transition = 'opacity 0.3s ease';
-            }, 50);
+                outputLine.style.transform = 'translateY(0)';
+                outputLine.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            });
 
             if (window.scroll && window.scroll.update) window.scroll.update();
-        }, 400);
-    }
-
-    function copyToClipboard(text, toast) {
-        navigator.clipboard.writeText(text).then(() => {
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 1500);
-        }).catch(() => {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 1500);
-        });
+        }, 500);
     }
 
     const observer = new IntersectionObserver((entries) => {
@@ -351,8 +321,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 hasStarted = true;
                 terminalContent.innerHTML = '';
                 terminalCommands.forEach((command, index) => {
-                    const lineWrapper = createTerminalLine(command, index);
-                    terminalContent.appendChild(lineWrapper);
+                    const line = createTerminalLine(command, index);
+                    terminalContent.appendChild(line);
                 });
 
                 const cursor = document.createElement('span');
