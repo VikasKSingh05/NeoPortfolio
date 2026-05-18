@@ -469,8 +469,7 @@ html,body{
   }
 
   .animated-line {
-    opacity: 0;
-    animation: fadeIn 0.3s ease forwards;
+    opacity: 1;
     margin-top: 6px;
     line-height: 1.5;
     white-space: pre-wrap;
@@ -478,44 +477,7 @@ html,body{
     position: relative;
   }
 
-  .typing {
-    display: inline-block;
-    white-space: nowrap;
-    position: relative;
-    width: 0;
-    overflow: hidden;
-  }
-
-  .typing::after {
-    content: '|';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    color: #f8f8f8;
-    animation: blink 0.75s step-end infinite;
-  }
-
-  .typing.animate {
-    animation: typing 1s steps(40, end) forwards;
-  }
-
-  .typing.animate::after {
-    animation: typing 1s steps(40, end) forwards, blink 0.75s step-end infinite;
-  }
-
-  @keyframes typing {
-    from { width: 0; }
-    to { width: 100%; }
-  }
-
-  @keyframes blink {
-    50% { opacity: 0; }
-  }
-
-  @keyframes fadeIn {
-    to { opacity: 1; }
-  }
+  
 
   .text-green-500 { color: #34d399; }
   .text-blue-500  { color: #60a5fa; }

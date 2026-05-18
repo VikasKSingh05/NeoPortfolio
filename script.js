@@ -82,29 +82,7 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 
-const steps = [
-  { delay: 1000, html: 'ℹ Output folder:<div class="pl-2">- /projects /portfolio /about_me</div>', class: 'text-blue-500' },
-];
 
-const terminal = document.getElementById('terminal-output');
-
-steps.forEach(({ delay, text, html, class: className }) => {
-  setTimeout(() => {
-    const line = document.createElement('div');
-    line.className = `animated-line ${className}`;
-    if (html) {
-      line.innerHTML = html;
-    } else {
-      line.textContent = text;
-    }
-    terminal.appendChild(line);
-    if (window.scroll && window.scroll.update) window.scroll.update();
-  }, delay);
-});
-
-setTimeout(() => {
-  if (window.scroll) window.scroll.update();
-}, 7500);
 
 let timeout;
 
@@ -280,70 +258,43 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Terminal typing animation
+// Terminal content - displayed instantly
     const terminalCommands = [
-        { html: 'ℹ Output folder:<div class="pl-2">- /projects /portfolio /about_me</div>', delay: 400, class: 'text-blue-500' },
-        { text: 'Type, scroll, click — curiosity leads the way.', delay: 400, class: 'text-muted' },
-        { text: '> echo "Hello, World!"', delay: 300 },
-        { text: 'Hello, World!', delay: 200, class: 'text-green-500' },
-        { text: '> cat about_me.txt', delay: 300 },
-        { text: 'CSE-AIML student by day, code wizard by night.', delay: 200 },
-        { text: '> ls skills/', delay: 300 },
-        { text: 'DSA    Web Development    Problem Solving', delay: 200, class: 'text-blue-500' },
-        { text: '> cat hobbies.txt', delay: 300 },
-        { text: 'Gaming    Anime    Coding    Learning', delay: 200, class: 'text-green-500' }
+        { html: 'ℹ Output folder:<div class="pl-2">- /projects /portfolio /about_me</div>', class: 'text-blue-500' },
+        { text: 'Type, scroll, click — curiosity leads the way.', class: 'text-muted' },
+        { text: '> echo "Hello, World!"' },
+        { text: 'Hello, World!', class: 'text-green-500' },
+        { text: '> cat about_me.txt' },
+        { text: 'CSE-AIML student by day, code wizard by night.' },
+        { text: '> ls skills/' },
+        { text: 'DSA    Web Development    Problem Solving', class: 'text-blue-500' },
+        { text: '> cat hobbies.txt' },
+        { text: 'Gaming    Anime    Coding    Learning', class: 'text-green-500' }
     ];
-
-    let currentCommand = 0;
-
-    function typeCommand() {
-        if (currentCommand < terminalCommands.length) {
-            const command = terminalCommands[currentCommand];
-            const line = document.createElement('div');
-            line.className = 'animated-line';
-            if (command.class) {
-                line.classList.add(command.class);
-            }
-            
-            const typing = document.createElement('div');
-            typing.className = 'typing';
-            if (command.html) {
-                typing.innerHTML = command.html;
-            } else {
-                typing.textContent = command.text;
-            }
-            
-            line.appendChild(typing);
-            terminalContent.appendChild(line);
-            if (window.scroll && window.scroll.update) window.scroll.update();
-
-            requestAnimationFrame(() => {
-                typing.classList.add('animate');
-            });
-
-            setTimeout(() => {
-                typing.classList.remove('typing', 'animate');
-                currentCommand++;
-                if (currentCommand < terminalCommands.length) {
-                    setTimeout(typeCommand, 800);
-                }
-            }, command.delay);
-        }
-    }
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting && !hasStarted) {
                 hasStarted = true;
-                // Clear existing content
                 terminalContent.innerHTML = '';
-                currentCommand = 0;
-                // Start typing animation
-                setTimeout(typeCommand, 500);
+                terminalCommands.forEach(command => {
+                    const line = document.createElement('div');
+                    line.className = 'animated-line';
+                    if (command.class) {
+                        line.classList.add(command.class);
+                    }
+                    if (command.html) {
+                        line.innerHTML = command.html;
+                    } else {
+                        line.textContent = command.text;
+                    }
+                    terminalContent.appendChild(line);
+                });
+                if (window.scroll && window.scroll.update) window.scroll.update();
             }
         });
     }, {
-        threshold: 0.5 // Start when 50% of the terminal is visible
+        threshold: 0.3
     });
 
     observer.observe(document.getElementById('about'));
@@ -358,16 +309,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
-const aboutMeSequence = [
-  { text: '> echo "Hello, World!"', delay: 5000 },
-  { text: 'Hello, World!', delay: 500, class: 'text-green-500' },
-  { text: '> cat about_me.txt', delay: 1000 },
-  { text: 'CSE-AIML student by day, code wizard by night.', delay: 500 },
-  { text: '> ls skills/', delay: 1000 },
-  { text: 'DSA    Web Development    Problem Solving', delay: 500, class: 'text-blue-500' },
-  { text: '> cat hobbies.txt', delay: 1000 },
-  { text: 'Gaming    Anime    Coding    Learning', delay: 500, class: 'text-green-500' },
-  // { text: '> echo "Always learning, always building."', delay: 2000 },
-  // { text: 'Always learning, always building.', delay: 1000, class: 'text-muted' }
-];
