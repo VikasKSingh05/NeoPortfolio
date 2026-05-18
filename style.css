@@ -475,6 +475,68 @@ html,body{
     white-space: pre-wrap;
     word-break: break-all;
     position: relative;
+    cursor: default;
+    transition: background-color 0.15s ease, padding-left 0.15s ease;
+    padding: 2px 4px;
+    border-radius: 3px;
+  }
+
+  .animated-line:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  .animated-line.clickable {
+    cursor: pointer;
+  }
+
+  .animated-line.clickable:hover {
+    background-color: rgba(96, 165, 250, 0.15);
+    padding-left: 8px;
+  }
+
+  .animated-line.processing {
+    color: #fbbf24;
+  }
+
+  .animated-line.executed {
+    opacity: 0.6;
+  }
+
+  .terminal-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background-color: #f8f8f8;
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+  }
+
+  .terminal-content .copied-toast {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #34d399;
+    color: #000;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+  }
+
+  .terminal-content .copied-toast.show {
+    opacity: 1;
+  }
+
+  .terminal-output-line {
+    position: relative;
+  }
+
+  .terminal-output-line:hover .copied-toast {
+    opacity: 1;
   }
 
   
@@ -483,6 +545,10 @@ html,body{
   .text-blue-500  { color: #60a5fa; }
   .text-muted     { color: #9ca3af; }
   .pl-2           { padding-left: 0.75rem; }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
 
   #terminal-demo {
     display: none;

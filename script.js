@@ -262,34 +262,103 @@ document.addEventListener('DOMContentLoaded', function() {
     const terminalCommands = [
         { html: 'ℹ Output folder:<div class="pl-2">- /projects /portfolio /about_me</div>', class: 'text-blue-500' },
         { text: 'Type, scroll, click — curiosity leads the way.', class: 'text-muted' },
-        { text: '> echo "Hello, World!"' },
-        { text: 'Hello, World!', class: 'text-green-500' },
-        { text: '> cat about_me.txt' },
-        { text: 'CSE-AIML student by day, code wizard by night.' },
-        { text: '> ls skills/' },
-        { text: 'DSA    Web Development    Problem Solving', class: 'text-blue-500' },
-        { text: '> cat hobbies.txt' },
-        { text: 'Gaming    Anime    Coding    Learning', class: 'text-green-500' }
+        { text: '> echo "Hello, World!"', isCommand: true, output: 'Hello, World!' },
+        { text: '> cat about_me.txt', isCommand: true, output: 'CSE-AIML student by day, code wizard by night.' },
+        { text: '> ls skills/', isCommand: true, output: 'DSA    Web Development    Problem Solving' },
+        { text: '> cat hobbies.txt', isCommand: true, output: 'Gaming    Anime    Coding    Learning' }
     ];
+
+    function createTerminalLine(command, index) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'terminal-output-line';
+        wrapper.dataset.command = command.isCommand ? 'true' : 'false';
+
+        const line = document.createElement('div');
+        line.className = 'animated-line';
+        if (command.class) line.classList.add(command.class);
+        if (command.isCommand) line.classList.add('clickable');
+
+        if (command.html) {
+            line.innerHTML = command.html;
+        } else {
+            line.textContent = command.text;
+        }
+
+        const toast = document.createElement('span');
+        toast.className = 'copied-toast';
+        toast.textContent = 'Copied!';
+        wrapper.appendChild(toast);
+
+        wrapper.appendChild(line);
+
+        if (command.isCommand) {
+            line.addEventListener('click', () => executeCommand(wrapper, line, command.output));
+        }
+
+        line.addEventListener('click', () => {
+            copyToClipboard(command.html ? line.textContent : command.text, toast);
+        });
+
+        return wrapper;
+    }
+
+    function executeCommand(wrapper, line, output) {
+        if (wrapper.dataset.executed === 'true') return;
+
+        wrapper.dataset.executed = 'true';
+        line.classList.add('processing');
+        line.innerHTML = line.textContent + ' <span style="color: #fbbf24;">processing...</span>';
+
+        setTimeout(() => {
+            line.classList.remove('processing');
+            line.classList.add('executed');
+            line.innerHTML = line.textContent;
+
+            const outputLine = document.createElement('div');
+            outputLine.className = 'animated-line text-green-500';
+            outputLine.style.opacity = '0';
+            outputLine.textContent = output;
+            wrapper.insertAdjacentElement('afterend', outputLine);
+
+            setTimeout(() => {
+                outputLine.style.opacity = '1';
+                outputLine.style.transition = 'opacity 0.3s ease';
+            }, 50);
+
+            if (window.scroll && window.scroll.update) window.scroll.update();
+        }, 400);
+    }
+
+    function copyToClipboard(text, toast) {
+        navigator.clipboard.writeText(text).then(() => {
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 1500);
+        }).catch(() => {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 1500);
+        });
+    }
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting && !hasStarted) {
                 hasStarted = true;
                 terminalContent.innerHTML = '';
-                terminalCommands.forEach(command => {
-                    const line = document.createElement('div');
-                    line.className = 'animated-line';
-                    if (command.class) {
-                        line.classList.add(command.class);
-                    }
-                    if (command.html) {
-                        line.innerHTML = command.html;
-                    } else {
-                        line.textContent = command.text;
-                    }
-                    terminalContent.appendChild(line);
+                terminalCommands.forEach((command, index) => {
+                    const lineWrapper = createTerminalLine(command, index);
+                    terminalContent.appendChild(lineWrapper);
                 });
+
+                const cursor = document.createElement('span');
+                cursor.className = 'terminal-cursor';
+                terminalContent.appendChild(cursor);
+
                 if (window.scroll && window.scroll.update) window.scroll.update();
             }
         });
