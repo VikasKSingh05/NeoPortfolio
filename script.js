@@ -4,10 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const vShape = document.getElementById('v-shape');
     const loadingText = document.getElementById('loading-text');
     const main = document.getElementById('main');
-    
-    let progress = 0;
-    const totalDuration = 3000; 
-    const updateInterval = 50; 
+    const progressBar = document.getElementById('progress-bar');
     
     main.style.opacity = '0';
     main.style.pointerEvents = 'none';
@@ -16,50 +13,80 @@ document.addEventListener("DOMContentLoaded", function() {
     gsap.set(".boundingelem", { y: '100%' });
     gsap.set("#landingfooter", { y: '-10', opacity: 0 });
     
-    // Start the loading animation
-    setTimeout(() => {
-        vShape.classList.add('loaded');
-    }, 500);
+    gsap.to(vShape, {
+        opacity: 1,
+        scale: 1,
+        duration: 0.6,
+        ease: "back.out(1.7)"
+    });
+
+    gsap.to(vShape, {
+        rotation: 360,
+        duration: 1.2,
+        ease: "power2.inOut",
+        onComplete: () => {
+            gsap.set(vShape, { rotation: 0 });
+        }
+    });
+
+    let progress = 0;
+    const totalDuration = 1200; 
+    const updateInterval = 30;
+    let skipped = false;
     
     const progressInterval = setInterval(() => {
+        if (skipped) return;
+        
         progress += (100 / (totalDuration / updateInterval));
         
         if (progress >= 100) {
             progress = 100;
             clearInterval(progressInterval);
-            
-            // Complete loading
-            loadingText.textContent = '100%';
-            loadingText.classList.add('complete');
-            
-            setTimeout(() => {
-                vShape.classList.add('morph');
-                vShape.textContent = 'Vikas';
-            }, 500);
-            
-            setTimeout(() => {
-                preloader.classList.add('fade-out');
-                main.style.opacity = '1';
-                main.style.pointerEvents = 'auto';
-                
-                setTimeout(() => {
-                    firstPageAnim();
-                    circleSkew();
-                    
-                    setTimeout(() => {
-                        if (window.scroll) window.scroll.update();
-                    }, 2000);
-                }, 100);
-                
-                setTimeout(() => {
-                    preloader.remove();
-                }, 500);
-            }, 1500);
-            
+            completeLoading();
         } else {
+            progressBar.style.width = progress + '%';
             loadingText.textContent = Math.floor(progress) + '%';
         }
     }, updateInterval);
+    
+    function completeLoading() {
+        loadingText.textContent = '100%';
+        progressBar.style.width = '100%';
+        
+        setTimeout(() => {
+            vShape.classList.add('morph');
+            vShape.textContent = 'Vikas';
+        }, 200);
+        
+        setTimeout(() => {
+            preloader.classList.add('fade-out');
+            main.style.opacity = '1';
+            main.style.pointerEvents = 'auto';
+            
+            setTimeout(() => {
+                firstPageAnim();
+                circleSkew();
+                
+                setTimeout(() => {
+                    if (window.scroll) window.scroll.update();
+                }, 2000);
+            }, 100);
+            
+            setTimeout(() => {
+                preloader.remove();
+            }, 500);
+        }, 800);
+    }
+    
+    preloader.addEventListener('click', () => {
+        if (!skipped) {
+            skipped = true;
+            clearInterval(progressInterval);
+            progressBar.style.width = '100%';
+            loadingText.textContent = '100%';
+            completeLoading();
+        }
+    });
 });
 
 // locomotive scroll setup
