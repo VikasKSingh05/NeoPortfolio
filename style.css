@@ -492,14 +492,16 @@ html,body{
     padding-left: 12px;
   }
 
-  .animated-line.executed {
+.animated-line.executed {
     opacity: 0.6;
   }
 
-  .processing-text {
+  .processing-line {
+    padding-left: 20px;
     color: #fbbf24;
     font-style: italic;
     animation: pulse 0.6s ease-in-out infinite;
+    margin-top: 4px;
   }
 
   @keyframes pulse {
@@ -518,14 +520,6 @@ html,body{
   .animated-line.clickable:hover {
     background-color: rgba(96, 165, 250, 0.15);
     padding-left: 8px;
-  }
-
-  .animated-line.processing {
-    color: #fbbf24;
-  }
-
-  .animated-line.executed {
-    opacity: 0.6;
   }
 
   .terminal-cursor {

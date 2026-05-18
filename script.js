@@ -262,7 +262,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const terminalCommands = [
         { html: 'ℹ Output folder:<div class="pl-2">- /projects /portfolio /about_me</div>', class: 'text-blue-500' },
         { text: 'Type, scroll, click — curiosity leads the way.', class: 'text-muted' },
-        { text: '> echo "Hello, World!"', isCommand: true, output: 'Hello, World!' },
         { text: '> cat about_me.txt', isCommand: true, output: 'CSE-AIML student by day, code wizard by night.' },
         { text: '> ls skills/', isCommand: true, output: 'DSA    Web Development    Problem Solving' },
         { text: '> cat hobbies.txt', isCommand: true, output: 'Gaming    Anime    Coding    Learning' }
@@ -291,11 +290,14 @@ document.addEventListener('DOMContentLoaded', function() {
         if (line.dataset.executed === 'true') return;
 
         line.dataset.executed = 'true';
-        const originalText = line.textContent;
-        line.innerHTML = originalText + '<span class="processing-text">processing...</span>';
+
+        const processingLine = document.createElement('div');
+        processingLine.className = 'processing-line';
+        processingLine.textContent = 'processing...';
+        line.insertAdjacentElement('afterend', processingLine);
 
         setTimeout(() => {
-            line.innerHTML = originalText;
+            processingLine.remove();
             line.classList.add('executed');
 
             const outputLine = document.createElement('div');
