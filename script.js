@@ -54,8 +54,11 @@ document.addEventListener("DOMContentLoaded", function() {
         progressBar.style.width = '100%';
         
         setTimeout(() => {
-            vShape.classList.add('morph');
-            vShape.textContent = 'Vikas';
+vShape.classList.add('morph');
+            
+            setTimeout(() => {
+                vShape.textContent = 'Portfolio';
+            }, 150);
         }, 200);
         
         setTimeout(() => {
